@@ -48,7 +48,7 @@ func main() {
 		sort.Ints(list)
 	}
 
-	// Part 1: Calculate distance
+	// Part 1: Calculate total distance
 	distance := 0
 
 	for i := 0; i < len(lists[0]); i++ {
@@ -58,26 +58,25 @@ func main() {
 	fmt.Println("distance:", distance)
 
 	// Part 2: Similarity score
-
 	// Count occurrences
-	smap := make(map[int]int)
+	occurrences := make(map[int]int)
 
-	for _, v := range lists[1] {
-		count, exists := smap[v]
+	for _, value := range lists[1] {
+		count, exists := occurrences[value]
 
 		if exists {
-			smap[v] = count + 1
+			occurrences[value] = count + 1
 		} else {
-			smap[v] = 1
+			occurrences[value] = 1
 		}
 	}
 
 	// Calculate similarity score
 	similarity := 0
-	for _, v := range lists[0] {
-		count, exists := smap[v]
+	for _, value := range lists[0] {
+		count, exists := occurrences[value]
 		if exists {
-			similarity += v * count
+			similarity += value * count
 		}
 	}
 
