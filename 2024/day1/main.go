@@ -12,6 +12,7 @@ import (
 const listCount int = 2
 
 func main() {
+	// Open input file
 	file, err := os.Open("input.txt")
 
 	if err != nil {
@@ -21,9 +22,10 @@ func main() {
 
 	defer file.Close()
 
-	scanner := bufio.NewScanner(file)
-
+	// Read lines and create lists
 	var lists [listCount][]int
+
+	scanner := bufio.NewScanner(file)
 
 	for scanner.Scan() {
 		line := scanner.Text()
@@ -41,10 +43,12 @@ func main() {
 		}
 	}
 
+	// Sort lists
 	for _, list := range lists {
 		sort.Ints(list)
 	}
 
+	// Part 1: Calculate distance
 	distance := 0
 
 	for i := 0; i < len(lists[0]); i++ {
@@ -53,6 +57,9 @@ func main() {
 
 	fmt.Println("distance:", distance)
 
+	// Part 2: Similarity score
+
+	// Count occurrences
 	smap := make(map[int]int)
 
 	for _, v := range lists[1] {
@@ -65,6 +72,7 @@ func main() {
 		}
 	}
 
+	// Calculate similarity score
 	similarity := 0
 	for _, v := range lists[0] {
 		count, exists := smap[v]
