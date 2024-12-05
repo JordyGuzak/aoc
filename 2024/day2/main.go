@@ -9,22 +9,6 @@ import (
 	"strings"
 )
 
-func mapToInts(stringArray []string) ([]int, error) {
-	result := make([]int, len(stringArray))
-
-	for i, str := range stringArray {
-		num, err := strconv.Atoi(str)
-
-		if err != nil {
-			return nil, errors.New("Failed to convert to int: " + str)
-		}
-
-		result[i] = num
-	}
-
-	return result, nil
-}
-
 func main() {
 	safeCount := 0
 
@@ -50,10 +34,33 @@ func main() {
 
 		if isSafe(levels) {
 			safeCount++
+		} else {
+			for i := range levels {
+				if isSafe(remove(levels, i)) {
+					safeCount++
+					break
+				}
+			}
 		}
 	}
 
 	fmt.Println("Safe records: ", safeCount)
+}
+
+func mapToInts(stringArray []string) ([]int, error) {
+	result := make([]int, len(stringArray))
+
+	for i, str := range stringArray {
+		num, err := strconv.Atoi(str)
+
+		if err != nil {
+			return nil, errors.New("Failed to convert to int: " + str)
+		}
+
+		result[i] = num
+	}
+
+	return result, nil
 }
 
 func isSafe(levels []int) bool {
@@ -98,4 +105,13 @@ func abs(x int) int {
 	}
 
 	return x
+}
+
+func remove(slice []int, index int) []int {
+	var newSlice []int
+	if index > 0 {
+		newSlice = append(newSlice, slice[:index]...)
+	}
+	newSlice = append(newSlice, slice[index+1:]...)
+	return newSlice
 }
